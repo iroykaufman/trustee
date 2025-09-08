@@ -76,7 +76,7 @@ build: background-check-kbs
 
 .PHONY: background-check-kbs
 background-check-kbs:
-	$(CARGO_ENV) cargo build -p kbs --locked --release --no-default-features --features $(FEATURES),$(AS_FEATURE) $(TARGET_FLAG)
+	$(CARGO_ENV) cargo build -p kbs --release --no-default-features --features $(FEATURES),$(AS_FEATURE) $(TARGET_FLAG)
 
 .PHONY: passport-issuer-kbs
 passport-issuer-kbs:
@@ -90,7 +90,7 @@ passport-resource-kbs:
 
 .PHONY: cli
 cli:
-	$(CARGO_ENV) cargo build -p kbs-client --locked --release --no-default-features --features $(CLI_FEATURES) $(TARGET_FLAG)
+	$(CARGO_ENV) cargo build -p kbs-client --release --no-default-features --features $(CLI_FEATURES) $(TARGET_FLAG)
 
 .PHONY: cli-static-linux
 cli-static-linux:

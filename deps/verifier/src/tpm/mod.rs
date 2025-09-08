@@ -84,7 +84,7 @@ pub fn verify_tpm_quote_signature(tpm_quote: &TpmQuote, ak_public: &String) -> R
         .decode(&tpm_quote.signature)
         .context("Base64 decode of TPM quote signature failed")?;
 
-    let pub_bytes = general_purpose::STANDARD
+    let pub_bytes = base64::engine::general_purpose::STANDARD
         .decode(ak_public)
         .context("Base64 decode of AK public failed")?;
 
@@ -92,9 +92,18 @@ pub fn verify_tpm_quote_signature(tpm_quote: &TpmQuote, ak_public: &String) -> R
         .decode(&tpm_quote.message)
         .context("Base64 decode of quote message failed")?;
 
-    let _attest = Attest::unmarshall(&quote_bytes)?;
-    let ak = Public::unmarshall(&pub_bytes)?;
-    let signature = TpmSignature::unmarshall(&sig_bytes)?;
+
+    let _attest = Attest::unmarshall(&quote_bytes)
+        .context("Failed to unmarshall TPM quote/attest structure")?;
+    
+    println!("pub_bytes: {:?}", pub_bytes);
+
+    let ak = Public::unmarshall(&pub_bytes)
+        .context("Failed to unmarshall TPM public key structure")?;
+    
+    let signature = TpmSignature::unmarshall(&sig_bytes)
+        .context("Failed to unmarshall TPM signature structure")?;
+    
     let TpmSignature::RsaSsa(_) = signature.clone() else {
         bail!("Wrong Signature");
     };

@@ -90,7 +90,7 @@ dependencies = [
  "mime",
  "percent-encoding",
  "pin-project-lite",
- "rand 0.9.1",
+ "rand 0.9.2",
  "sha1",
  "smallvec",
  "tokio",
@@ -147,7 +147,7 @@ dependencies = [
  "futures-core",
  "futures-util",
  "mio",
- "socket2",
+ "socket2 0.5.10",
  "tokio",
  "tracing",
 ]
@@ -229,7 +229,7 @@ dependencies = [
  "serde_json",
  "serde_urlencoded",
  "smallvec",
- "socket2",
+ "socket2 0.5.10",
  "time",
  "tracing",
  "url",
@@ -565,17 +565,17 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 [[package]]
 name = "attestation-agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb#591d0bb45cd7a2c66f3778428940c40f7eec3b7d"
 dependencies = [
  "anyhow",
  "async-trait",
- "attester 0.1.0 (git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb)",
+ "attester",
  "base64 0.22.1",
+ "byteorder",
  "config 0.14.1",
  "const_format",
- "crypto 0.1.0 (git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb)",
+ "crypto",
  "hex",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/confidential-containers/kbs-types.git?rev=900aa8f)",
  "log",
  "serde",
  "serde_json",
@@ -605,7 +605,7 @@ dependencies = [
  "futures",
  "hex",
  "jsonwebtoken",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/virtee/kbs-types.git?rev=f4055a1)",
  "lazy_static",
  "log",
  "openssl",
@@ -637,7 +637,6 @@ dependencies = [
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr#65983fb789785cb63e4d3a352221a9ba98ba072d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -646,21 +645,22 @@ dependencies = [
  "base64 0.22.1",
  "cfg-if",
  "codicon",
- "crypto 0.1.0 (git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr)",
- "csv-rs 0.1.0 (git+https://github.com/panpingsheng/csv-rs.git?rev=7538198)",
+ "crypto",
+ "csv-rs 0.1.0 (git+https://github.com/openanolis/csv-rs.git?rev=9e92ac7)",
  "env_logger 0.11.8",
  "hex",
  "hyper 0.14.32",
  "hyper-tls 0.5.0",
  "iocuddle",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/confidential-containers/kbs-types.git?rev=900aa8f)",
  "log",
  "num-traits",
  "occlum_dcap",
- "openssl",
- "rsa",
+ "picky-asn1 0.10.1",
+ "picky-asn1-der 0.5.2",
+ "picky-asn1-x509 0.14.5",
  "s390_pv",
- "scroll",
+ "scroll 0.13.0",
  "serde",
  "serde_json",
  "serde_with 3.14.0",
@@ -671,27 +671,6 @@ dependencies = [
  "thiserror 2.0.12",
  "tokio",
  "tss-esapi",
-]
-
-[[package]]
-name = "attester"
-version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb#591d0bb45cd7a2c66f3778428940c40f7eec3b7d"
-dependencies = [
- "anyhow",
- "async-trait",
- "base64 0.22.1",
- "cfg-if",
- "crypto 0.1.0 (git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb)",
- "hex",
- "kbs-types",
- "log",
- "serde",
- "serde_json",
- "serde_with 3.14.0",
- "sha2",
- "strum",
- "thiserror 2.0.12",
 ]
 
 [[package]]
@@ -1491,7 +1470,6 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr#65983fb789785cb63e4d3a352221a9ba98ba072d"
 dependencies = [
  "aes-gcm",
  "aes-kw",
@@ -1499,33 +1477,10 @@ dependencies = [
  "base64 0.22.1",
  "concat-kdf",
  "ctr",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/confidential-containers/kbs-types.git?rev=900aa8f)",
  "p256",
  "rand 0.8.5",
- "rand 0.9.1",
- "rsa",
- "serde",
- "serde_json",
- "sha2",
- "strum",
- "zeroize",
-]
-
-[[package]]
-name = "crypto"
-version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb#591d0bb45cd7a2c66f3778428940c40f7eec3b7d"
-dependencies = [
- "aes-gcm",
- "aes-kw",
- "anyhow",
- "base64 0.22.1",
- "concat-kdf",
- "ctr",
- "kbs-types",
- "p256",
- "rand 0.8.5",
- "rand 0.9.1",
+ "rand 0.9.2",
  "rsa",
  "serde",
  "serde_json",
@@ -1583,7 +1538,7 @@ dependencies = [
 [[package]]
 name = "csv-rs"
 version = "0.1.0"
-source = "git+https://github.com/panpingsheng/csv-rs.git?rev=7538198#753819821493b0299ec8db622e10802eb6243c07"
+source = "git+https://github.com/openanolis/csv-rs.git?rev=9e92ac7#9e92ac7e73379c1206ce90c98e91b1b5391eb7f8"
 dependencies = [
  "bincode",
  "bitfield 0.13.2",
@@ -1659,7 +1614,7 @@ dependencies = [
  "openssl-probe",
  "openssl-sys",
  "schannel",
- "socket2",
+ "socket2 0.5.10",
  "windows-sys 0.59.0",
 ]
 
@@ -2153,7 +2108,7 @@ dependencies = [
  "hex",
  "log",
  "rstest",
- "scroll",
+ "scroll 0.12.0",
  "serde",
  "serde_json",
  "serde_with 1.14.0",
@@ -2686,7 +2641,7 @@ dependencies = [
  "httpdate",
  "itoa",
  "pin-project-lite",
- "socket2",
+ "socket2 0.5.10",
  "tokio",
  "tower-service",
  "tracing",
@@ -2791,7 +2746,7 @@ dependencies = [
  "libc",
  "percent-encoding",
  "pin-project-lite",
- "socket2",
+ "socket2 0.5.10",
  "system-configuration 0.6.1",
  "tokio",
  "tower-service",
@@ -3262,7 +3217,7 @@ dependencies = [
  "josekit",
  "jsonwebtoken",
  "jwt-simple",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/virtee/kbs-types.git?rev=f4055a1)",
  "kms",
  "lazy_static",
  "log",
@@ -3316,6 +3271,20 @@ dependencies = [
 [[package]]
 name = "kbs-types"
 version = "0.12.0"
+source = "git+https://github.com/confidential-containers/kbs-types.git?rev=900aa8f#900aa8fd2fceb9dc07aa835091bf12076a899ec1"
+dependencies = [
+ "base64 0.22.1",
+ "serde",
+ "serde_json",
+ "sha2",
+ "sm3",
+ "strum",
+ "thiserror 2.0.12",
+]
+
+[[package]]
+name = "kbs-types"
+version = "0.12.0"
 source = "git+https://github.com/virtee/kbs-types.git?rev=f4055a1#f4055a17979c509d86924c9cb459221e2d45ff12"
 dependencies = [
  "base64 0.22.1",
@@ -3327,19 +3296,18 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr#65983fb789785cb63e4d3a352221a9ba98ba072d"
 dependencies = [
  "anyhow",
  "async-trait",
- "attester 0.1.0 (git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr)",
+ "attester",
  "base64 0.22.1",
  "canon-json",
- "crypto 0.1.0 (git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr)",
+ "crypto",
  "jwt-simple",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/confidential-containers/kbs-types.git?rev=900aa8f)",
  "log",
  "reqwest 0.12.22",
- "resource_uri 0.1.0 (git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr)",
+ "resource_uri",
  "serde",
  "serde_json",
  "sha2",
@@ -3352,7 +3320,6 @@ dependencies = [
 [[package]]
 name = "kms"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb#591d0bb45cd7a2c66f3778428940c40f7eec3b7d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -3364,9 +3331,9 @@ dependencies = [
  "log",
  "p12",
  "prost",
- "rand 0.9.1",
+ "rand 0.9.2",
  "reqwest 0.12.22",
- "resource_uri 0.1.0 (git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb)",
+ "resource_uri",
  "ring",
  "serde",
  "serde_json",
@@ -4023,16 +3990,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df94ce210e5bc13cb6651479fa48d14f601d9858cfe0467f43ae157023b938d3"
 
 [[package]]
-name = "pbkdf2"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8ed6a7761f76e3b9f92dfb0a60a6a6477c61024b775147ff0973a02653abaf2"
-dependencies = [
- "digest",
- "hmac",
-]
-
-[[package]]
 name = "peeking_take_while"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4182,12 +4139,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "picky-asn1"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ff038f9360b934342fb3c0a1d6e82c438a2624b51c3c6e3e6d7cf252b6f3ee3"
+dependencies = [
+ "oid",
+ "serde",
+ "serde_bytes",
+]
+
+[[package]]
 name = "picky-asn1-der"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5df7873a9e36d42dadb393bea5e211fe83d793c172afad5fb4ec846ec582793f"
 dependencies = [
- "picky-asn1",
+ "picky-asn1 0.8.0",
+ "serde",
+ "serde_bytes",
+]
+
+[[package]]
+name = "picky-asn1-der"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9dccb53c26f70c082e008818f524bd45d057069517b047bd0c0ee062d6d7d7f2"
+dependencies = [
+ "picky-asn1 0.10.1",
  "serde",
  "serde_bytes",
 ]
@@ -4200,8 +4179,21 @@ checksum = "2c5f20f71a68499ff32310f418a6fad8816eac1a2859ed3f0c5c741389dd6208"
 dependencies = [
  "base64 0.21.7",
  "oid",
- "picky-asn1",
- "picky-asn1-der",
+ "picky-asn1 0.8.0",
+ "picky-asn1-der 0.4.1",
+ "serde",
+]
+
+[[package]]
+name = "picky-asn1-x509"
+version = "0.14.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5444990fc9e53de47353c95e6521a5f669676da986a10482ff3708bdaa1a2a4b"
+dependencies = [
+ "base64 0.22.1",
+ "oid",
+ "picky-asn1 0.10.1",
+ "picky-asn1-der 0.5.2",
  "serde",
 ]
 
@@ -4249,29 +4241,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "pkcs5"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e847e2c91a18bfa887dd028ec33f2fe6f25db77db3619024764914affe8b69a6"
-dependencies = [
- "aes",
- "cbc",
- "der",
- "pbkdf2",
- "scrypt",
- "sha2",
- "spki",
-]
-
-[[package]]
 name = "pkcs8"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f950b2377845cebe5cf8b5165cb3cc1a5e0fa5cfa3e1f7f55707d8fd82e0a7b7"
 dependencies = [
  "der",
- "pkcs5",
- "rand_core 0.6.4",
  "spki",
 ]
 
@@ -4462,7 +4437,7 @@ dependencies = [
  "quinn-udp",
  "rustc-hash 2.1.1",
  "rustls",
- "socket2",
+ "socket2 0.5.10",
  "thiserror 2.0.12",
  "tokio",
  "tracing",
@@ -4478,7 +4453,7 @@ dependencies = [
  "bytes",
  "getrandom 0.3.3",
  "lru-slab",
- "rand 0.9.1",
+ "rand 0.9.2",
  "ring",
  "rustc-hash 2.1.1",
  "rustls",
@@ -4499,7 +4474,7 @@ dependencies = [
  "cfg_aliases",
  "libc",
  "once_cell",
- "socket2",
+ "socket2 0.5.10",
  "tracing",
  "windows-sys 0.59.0",
 ]
@@ -4532,9 +4507,9 @@ dependencies = [
 
 [[package]]
 name = "rand"
-version = "0.9.1"
+version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9fbfd9d094a40bf3ae768db9361049ace4c0e04a4fd6b359518bd7b73a73dd97"
+checksum = "6db2770f06117d490610c7488547d543617b21bfa07796d7a12f6f1bd53850d1"
 dependencies = [
  "rand_chacha 0.9.0",
  "rand_core 0.9.3",
@@ -4838,18 +4813,6 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/bpradipt/guest-components.git?branch=tpm-attester-pr#65983fb789785cb63e4d3a352221a9ba98ba072d"
-dependencies = [
- "anyhow",
- "serde",
- "serde_json",
- "url",
-]
-
-[[package]]
-name = "resource_uri"
-version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=591d0bb#591d0bb45cd7a2c66f3778428940c40f7eec3b7d"
 dependencies = [
  "anyhow",
  "serde",
@@ -5166,15 +5129,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "salsa20"
-version = "0.10.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97a22f5af31f73a954c10289c93e8a50cc23d971e80ee446f1f6f7137a088213"
-dependencies = [
- "cipher",
-]
-
-[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5257,7 +5211,16 @@ version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ab8598aa408498679922eff7fa985c25d58a90771bd6be794434c5277eab1a6"
 dependencies = [
- "scroll_derive",
+ "scroll_derive 0.12.1",
+]
+
+[[package]]
+name = "scroll"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1257cd4248b4132760d6524d6dda4e053bc648c9070b960929bf50cfb1e7add"
+dependencies = [
+ "scroll_derive 0.13.0",
 ]
 
 [[package]]
@@ -5272,14 +5235,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "scrypt"
-version = "0.11.0"
+name = "scroll_derive"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0516a385866c09368f0b5bcd1caff3366aace790fcd46e2bb032697bb172fd1f"
+checksum = "22fc4f90c27b57691bbaf11d8ecc7cfbfe98a4da6dbe60226115d322aa80c06e"
 dependencies = [
- "pbkdf2",
- "salsa20",
- "sha2",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.104",
 ]
 
 [[package]]
@@ -5680,6 +5643,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "sm3"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebb9a3b702d0a7e33bc4d85a14456633d2b165c2ad839c5fd9a8417c1ab15860"
+dependencies = [
+ "digest",
+]
+
+[[package]]
 name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5693,6 +5665,16 @@ checksum = "e22376abed350d73dd1cd119b57ffccad95b4e585a7cda43e286245ce23c0678"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "socket2"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "233504af464074f9d066d7b5416c5f9b894a5862a6506e306f7b816cdd6f1807"
+dependencies = [
+ "libc",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -6033,9 +6015,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.46.1"
+version = "1.47.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0cc3a2344dafbe23a245241fe8b09735b521110d30fcefbbd5feb1797ca35d17"
+checksum = "89e49afdadebb872d3145a5638b59eb0691ea23e46ca484037cfab3b76b95038"
 dependencies = [
  "backtrace",
  "bytes",
@@ -6046,9 +6028,9 @@ dependencies = [
  "pin-project-lite",
  "signal-hook-registry",
  "slab",
- "socket2",
+ "socket2 0.6.0",
  "tokio-macros",
- "windows-sys 0.52.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -6188,7 +6170,7 @@ dependencies = [
  "percent-encoding",
  "pin-project",
  "prost",
- "socket2",
+ "socket2 0.5.10",
  "tokio",
  "tokio-stream",
  "tower 0.4.13",
@@ -6355,8 +6337,8 @@ dependencies = [
  "num-derive",
  "num-traits",
  "oid",
- "picky-asn1",
- "picky-asn1-x509",
+ "picky-asn1 0.8.0",
+ "picky-asn1-x509 0.12.0",
  "regex",
  "serde",
  "tss-esapi-sys",
@@ -6584,14 +6566,14 @@ dependencies = [
  "intel-tee-quote-verification-rs",
  "jsonwebkey",
  "jsonwebtoken",
- "kbs-types",
+ "kbs-types 0.12.0 (git+https://github.com/virtee/kbs-types.git?rev=f4055a1)",
  "log",
  "openssl",
  "reqwest 0.12.22",
  "rsa",
  "rstest",
  "s390_pv",
- "scroll",
+ "scroll 0.12.0",
  "serde",
  "serde_json",
  "serde_with 1.14.0",
