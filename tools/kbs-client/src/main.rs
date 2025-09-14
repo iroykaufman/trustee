@@ -297,7 +297,9 @@ async fn main() -> Result<()> {
                     path,
                     resource_file,
                 } => {
+                    
                     let resource_bytes = std::fs::read(resource_file)?;
+                    
                     kbs_client::set_resource(
                         &cli.url,
                         auth_key.clone(),

@@ -4,7 +4,7 @@
 
 //! KBS client SDK.
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{anyhow, bail, Result, Context};
 use base64::engine::general_purpose::{STANDARD, URL_SAFE_NO_PAD};
 use base64::Engine;
 use jwt_simple::prelude::{Claims, Duration, Ed25519KeyPair, EdDSAKeyPairLike};
@@ -212,13 +212,13 @@ pub async fn set_resource(
     path: &str,
     kbs_root_certs_pem: Vec<String>,
 ) -> Result<()> {
-    let auth_private_key = Ed25519KeyPair::from_pem(&auth_key)?;
+    let auth_private_key = Ed25519KeyPair::from_pem(&auth_key).context("Invalid auth_key")?;
     let claims = Claims::create(Duration::from_hours(2));
     let token = auth_private_key.sign(claims)?;
-
     let http_client = build_http_client(kbs_root_certs_pem)?;
 
     let resource_url = format!("{}/{KBS_URL_PREFIX}/resource/{}", url, path);
+
     let res = http_client
         .post(resource_url)
         .header("Content-Type", "application/octet-stream")

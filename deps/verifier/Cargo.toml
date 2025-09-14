@@ -77,6 +77,8 @@ reqwest.workspace = true
 bitflags = { version = "2.8.0", features = ["serde"] }
 tss-esapi = "7.6.0"
 rsa = "0.9.8"
+picky-asn1-x509 = "0.14.6"
+picky-asn1-der = "0.5.2"
 
 [build-dependencies]
 shadow-rs.workspace = true

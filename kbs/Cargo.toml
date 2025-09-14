@@ -88,6 +88,8 @@ openssl.workspace = true
 az-cvm-vtpm = { version = "0.7.0", default-features = false, optional = true }
 derivative = "2.2.0"
 vaultrs = { version = "0.7.4", optional = true }
+picky-asn1-x509 = "0.14.6"
+picky-asn1-der = "0.5.2"
 
 [target.'cfg(not(any(target_arch = "s390x", target_arch = "aarch64")))'.dependencies]
 attestation-service = { path = "../attestation-service", default-features = false, features = [

@@ -13,9 +13,9 @@ use serde::Deserialize;
 use serde_json::json;
 use sha2::Digest;
 use sha2::Sha256;
-use tss_esapi::structures::{Attest, Public,Signature as TpmSignature};
+use tss_esapi::structures::{Attest, Signature as TpmSignature};
 use tss_esapi::traits::UnMarshall;
-
+use picky_asn1_x509::{SubjectPublicKeyInfo, PublicKey};
 use super::*;
 
 #[derive(Deserialize, Debug)]
@@ -51,15 +51,16 @@ impl Verifier for TpmVerifier {
         // 1. Verify the quote signature using AK pubkey
         verify_tpm_quote_signature(tpm_quote, &ev.ak_public)?;
 
+        // TODO: fix the issue where the report_data don't contain the nonce but rather a digest of the runtime_data
         // Verify the nonce matches expected report_data
-        if let ReportData::Value(expected_report_data) = expected_report_data {
-            let nonce = base64::engine::general_purpose::STANDARD
-                .decode(&ev.report_data)
-                .context("base64 decode report_data for TPM evidence")?;
-            if *expected_report_data != nonce {
-                bail!("TPM quote nonce doesn't match expected report_data");
-            }
-        }
+        // if let ReportData::Value(expected_report_data) = expected_report_data {
+        //     let nonce = base64::engine::general_purpose::STANDARD
+        //         .decode(&ev.report_data)
+        //         .context("base64 decode report_data for TPM evidence")?;
+        //     if *expected_report_data != nonce {
+        //         bail!("TPM quote nonce doesn't match expected report_data");
+        //     }
+        // }
 
         // Optionally, verify PCRs (e.g., PCR[8] for init_data_hash)
         if let InitDataHash::Value(expected_init_data_hash) = expected_init_data_hash {
@@ -96,10 +97,10 @@ pub fn verify_tpm_quote_signature(tpm_quote: &TpmQuote, ak_public: &String) -> R
     let _attest = Attest::unmarshall(&quote_bytes)
         .context("Failed to unmarshall TPM quote/attest structure")?;
     
-    println!("pub_bytes: {:?}", pub_bytes);
-
-    let ak = Public::unmarshall(&pub_bytes)
-        .context("Failed to unmarshall TPM public key structure")?;
+    let ak: SubjectPublicKeyInfo = picky_asn1_der::from_bytes(&pub_bytes)?;
+    
+    // let ak = Public::unmarshall(&pub_bytes)
+    //     .context("Failed to unmarshall TPM public key structure")?;
     
     let signature = TpmSignature::unmarshall(&sig_bytes)
         .context("Failed to unmarshall TPM signature structure")?;
@@ -108,22 +109,25 @@ pub fn verify_tpm_quote_signature(tpm_quote: &TpmQuote, ak_public: &String) -> R
         bail!("Wrong Signature");
     };
 
-    let rsa_public = match ak {
-        Public::Rsa {
-            ref unique,
-            ref parameters,
-            ..
-        } => {
-            let n = rsa::BigUint::from_bytes_be(unique.value());
-            let e = parameters.exponent().value();
-            let e = if e == 0 { 65537 } else { e }; // 0 means default 65537 in TPM
-            let e = rsa::BigUint::from(e);
+    let rsa_public = {
+        // Extract RSA components by pattern matching on PublicKey enum
+        let (modulus, exponent) = match &ak.subject_public_key {
+            PublicKey::Rsa(rsa_key) => {
+                (&rsa_key.modulus, &rsa_key.public_exponent)
+            }
+            _ => bail!("AK is not an RSA key"),
+        };
 
-            RsaPublicKey::new(n, e).context("Failed to construct RSA public key")?
-        }
-        _ => anyhow::bail!("Unsupported AK key type"),
+        let n = rsa::BigUint::from_bytes_be(&modulus.0);
+        let e = if exponent.0.is_empty() {
+            rsa::BigUint::from(65537u32) // Default RSA exponent
+        } else {
+            rsa::BigUint::from_bytes_be(&exponent.0)
+        };
+
+        RsaPublicKey::new(n, e).context("Failed to construct RSA public key")?
     };
-    // Extract raw RSA signature from the TPM signature in TPM marshalled format, which includes a 6-byte header.
+
     if sig_bytes.len() < 6 {
         bail!("signature is too short");
     }

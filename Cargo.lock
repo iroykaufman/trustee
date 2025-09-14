@@ -658,7 +658,7 @@ dependencies = [
  "occlum_dcap",
  "picky-asn1 0.10.1",
  "picky-asn1-der 0.5.2",
- "picky-asn1-x509 0.14.5",
+ "picky-asn1-x509 0.14.6",
  "s390_pv",
  "scroll 0.13.0",
  "serde",
@@ -3224,6 +3224,8 @@ dependencies = [
  "mobc",
  "openssl",
  "p256",
+ "picky-asn1-der 0.5.2",
+ "picky-asn1-x509 0.14.6",
  "prometheus",
  "prost",
  "rand 0.8.5",
@@ -4186,9 +4188,9 @@ dependencies = [
 
 [[package]]
 name = "picky-asn1-x509"
-version = "0.14.5"
+version = "0.14.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5444990fc9e53de47353c95e6521a5f669676da986a10482ff3708bdaa1a2a4b"
+checksum = "d493f73cf052073ca1fe38666f74c2396987aa6ea660e77dd624cc6c8f60389e"
 dependencies = [
  "base64 0.22.1",
  "oid",
@@ -6569,6 +6571,8 @@ dependencies = [
  "kbs-types 0.12.0 (git+https://github.com/virtee/kbs-types.git?rev=f4055a1)",
  "log",
  "openssl",
+ "picky-asn1-der 0.5.2",
+ "picky-asn1-x509 0.14.6",
  "reqwest 0.12.22",
  "rsa",
  "rstest",
