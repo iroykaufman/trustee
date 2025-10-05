@@ -24,7 +24,7 @@ pub mod config;
 
 const MAX_TRUSTED_AK_KEYS: usize = 100;
 const INITDATA_PCR: usize = 8;
-const TPM_REPORT_DATA_SIZE: usize = 64;
+const TPM_REPORT_DATA_SIZE: usize = 32;
 
 #[derive(Deserialize, Debug)]
 pub struct Evidence {
@@ -149,7 +149,6 @@ impl TpmVerifier {
 
         for entry in trusted_keys {
             let path = entry.path();
-
             let key_content = fs::read_to_string(&path)?;
             let pkey = PKey::public_key_from_pem(key_content.as_bytes())
                 .context("Failed to parse PEM public key")?;
@@ -302,7 +301,7 @@ impl Verifier for TpmVerifier {
         let mut claims = parse_tee_evidence(&ev.quote);
         extend_claim(&mut claims, &ev.quote)?;
 
-        Ok(vec![(claims, "cpu".to_string())])
+        Ok(vec![(claims, "tpm".to_string())])
     }
 }
 

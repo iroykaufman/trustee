@@ -48,8 +48,11 @@ impl Attest for BuiltInCoCoAs {
 
             verification_requests.push(request);
         }
-
-        let policy_ids = vec!["default".to_string()];
+        // aaa: this need to be change to the vector of all the ids
+        let existing_policies = self.inner.read().await.list_policies().await.unwrap_or_default();
+        debug!("Existing policies: {:?}", existing_policies);
+        
+        let policy_ids: Vec<String> = existing_policies.keys().cloned().collect();
         self.inner
             .read()
             .await

@@ -227,7 +227,7 @@ impl AttestationTokenBroker for EarAttestationTokenBroker {
         let reference_data = serde_json::to_string(&reference_data)?;
 
         if policy_ids.len() > 1 {
-            warn!("EAR token only accepts the first policy. The rest will be ignored.");
+            warn!("EAR token match the policy id from the format defualt_<tee_class_name> to the match tee class. The rest will be ignored.");
         }
 
         if policy_ids.is_empty() {
@@ -254,10 +254,14 @@ impl AttestationTokenBroker for EarAttestationTokenBroker {
                 .into_iter()
                 .map(|c| c.tag().to_string())
                 .collect();
-
             // There is a policy for each tee class.
-            // The cpu tee class is loaded as the default.
-            let policy_id = format!("{}_{}", policy_ids[0], tee_claims.tee_class);
+            // Choose the policy that matches the tee class.
+            let default_policy_name = format!("default_{}", tee_claims.tee_class);
+            let Some(policy_id_index) = policy_ids.iter().position(|x| x == &default_policy_name) else {
+                bail!("No policy found for tee class {}", tee_claims.tee_class);
+            };
+            let policy_id = policy_ids[policy_id_index].clone();
+            debug!("Using policy_id: {}", policy_id);
             let policy_results = self
                 .policy_engine
                 .evaluate(&reference_data, &tcb_claims_json, &policy_id, rules)
