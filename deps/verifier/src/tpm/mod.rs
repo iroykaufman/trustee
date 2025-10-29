@@ -133,49 +133,49 @@ impl TpmVerifier {
     }
 
     pub fn new(config: Option<config::TpmVerifierConfig>) -> Result<Self> {
-        let config = config.unwrap_or_default();
+        //let config = config.unwrap_or_default();
         let mut trusted_ak_hashes = HashSet::new();
 
-        let keys_dir = config.trusted_ak_keys_dir;
+        // let keys_dir = config.trusted_ak_keys_dir;
 
-        info!("TPM verifier trusted keys dir {:?}", keys_dir);
+        // info!("TPM verifier trusted keys dir {:?}", keys_dir);
 
-        // Build a lazy iterator to filter and take valid .pub files
-        // without collecting them into a vector first
+        // // Build a lazy iterator to filter and take valid .pub files
+        // // without collecting them into a vector first
 
-        let dir_entries = fs::read_dir(&keys_dir)
-            .with_context(|| format!("Failed to read trusted AK keys directory {:?}", keys_dir))?;
+        // let dir_entries = fs::read_dir(&keys_dir)
+        //     .with_context(|| format!("Failed to read trusted AK keys directory {:?}", keys_dir))?;
 
-        let trusted_keys = dir_entries
-            .filter_map(|entry_result| entry_result.ok())
-            .filter(|entry| {
-                let path = entry.path();
-                path.is_file() && path.extension() == Some("pub".as_ref())
-                // This implicitly filters out '.' and '..'
-            })
-            // The directory will not be read beyond this number of valid files
-            .take(config.max_trusted_ak_keys);
+        // let trusted_keys = dir_entries
+        //     .filter_map(|entry_result| entry_result.ok())
+        //     .filter(|entry| {
+        //         let path = entry.path();
+        //         path.is_file() && path.extension() == Some("pub".as_ref())
+        //         // This implicitly filters out '.' and '..'
+        //     })
+        //     // The directory will not be read beyond this number of valid files
+        //     .take(config.max_trusted_ak_keys);
 
-        for entry in trusted_keys {
-            let path = entry.path();
+        // for entry in trusted_keys {
+        //     let path = entry.path();
 
-            // Try to read and parse the key, but continue on error instead of failing
-            match Self::load_and_hash_key(&path) {
-                Ok(hash) => {
-                    debug!("Successfully loaded trusted AK key from {:?}", path);
-                    trusted_ak_hashes.insert(hash);
-                }
-                Err(e) => {
-                    warn!("Failed to load trusted AK key from {:?}: {}", path, e);
-                    continue;
-                }
-            }
-        }
+        //     // Try to read and parse the key, but continue on error instead of failing
+        //     match Self::load_and_hash_key(&path) {
+        //         Ok(hash) => {
+        //             debug!("Successfully loaded trusted AK key from {:?}", path);
+        //             trusted_ak_hashes.insert(hash);
+        //         }
+        //         Err(e) => {
+        //             warn!("Failed to load trusted AK key from {:?}: {}", path, e);
+        //             continue;
+        //         }
+        //     }
+        // }
 
-        info!(
-            "TPM verifier loaded {} trusted AK key(s)",
-            trusted_ak_hashes.len()
-        );
+        // info!(
+        //     "TPM verifier loaded {} trusted AK key(s)",
+        //     trusted_ak_hashes.len()
+        // );
         Ok(Self { trusted_ak_hashes })
     }
 }
