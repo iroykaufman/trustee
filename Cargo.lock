@@ -557,7 +557,6 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 [[package]]
 name = "attestation-agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -630,7 +629,6 @@ dependencies = [
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -653,7 +651,7 @@ dependencies = [
  "occlum_dcap",
  "picky-asn1 0.10.1",
  "picky-asn1-der 0.5.3",
- "picky-asn1-x509 0.14.6",
+ "picky-asn1-x509 0.15.2",
  "s390_pv",
  "scroll",
  "serde",
@@ -1476,7 +1474,6 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "aes-gcm",
  "aes-kw",
@@ -3337,7 +3334,6 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -3380,7 +3376,6 @@ dependencies = [
 [[package]]
 name = "kms"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -4334,9 +4329,9 @@ dependencies = [
 
 [[package]]
 name = "picky-asn1-x509"
-version = "0.14.6"
+version = "0.15.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d493f73cf052073ca1fe38666f74c2396987aa6ea660e77dd624cc6c8f60389e"
+checksum = "c97cd14d567a17755910fa8718277baf39d08682a980b1b1a4b4da7d0bc61a04"
 dependencies = [
  "base64 0.22.1",
  "oid",
@@ -4593,7 +4588,6 @@ dependencies = [
 [[package]]
 name = "protos"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "prost",
  "tonic",
@@ -5004,7 +4998,6 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=841b77f#841b77fc36fac40054a81f261eb15ae95595c23d"
 dependencies = [
  "anyhow",
  "serde",

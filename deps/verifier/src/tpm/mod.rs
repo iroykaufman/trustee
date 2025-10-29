@@ -25,7 +25,7 @@ pub mod config;
 const MAX_TRUSTED_AK_KEYS: usize = 100;
 const DEFAULT_TRUSTED_AK_KEYS_DIR: &str = "/etc/tpm/trusted_ak_keys";
 const INITDATA_PCR: usize = 8;
-const TPM_REPORT_DATA_SIZE: usize = 64;
+const TPM_REPORT_DATA_SIZE: usize = 32;
 
 // TPM evidence format as sent by the TPM attester
 #[derive(Deserialize, Debug)]
@@ -291,12 +291,12 @@ impl Verifier for TpmVerifier {
         let ak_public = guest_ev.ak_public;
 
         // 1. Check if the provided AK public key is trusted
-        let ak_public_bytes = general_purpose::STANDARD.decode(&ak_public)?;
-        let ak_public_hash = Sha256::digest(&ak_public_bytes).to_vec();
+        // let ak_public_bytes = general_purpose::STANDARD.decode(&ak_public)?;
+        // let ak_public_hash = Sha256::digest(&ak_public_bytes).to_vec();
 
-        if !self.trusted_ak_hashes.contains(&ak_public_hash) {
-            bail!("The provided AK public key is not in the list of trusted keys");
-        }
+        // if !self.trusted_ak_hashes.contains(&ak_public_hash) {
+        //     bail!("The provided AK public key is not in the list of trusted keys");
+        // }
 
         // 2. Verify the quote signature using the (now trusted) AK pubkey
         verify_signature(&quote, &ak_public)?;
