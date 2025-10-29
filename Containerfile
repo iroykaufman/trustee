@@ -72,3 +72,4 @@ RUN apt-get update && \
     rm -rf /tmp/*
 
 COPY --from=builder /usr/local/bin/kbs /usr/local/bin/kbs
+COPY --from=builder /usr/local/bin/kbs-client /usr/local/bin/kbs-client
