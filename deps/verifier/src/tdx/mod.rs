@@ -12,8 +12,8 @@ use base64::Engine;
 use quote::parse_tdx_quote;
 use serde::{Deserialize, Serialize};
 
-pub(crate) mod claims;
-pub(crate) mod quote;
+pub mod claims;
+pub mod quote;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct TdxEvidence {
