@@ -80,7 +80,7 @@ impl AzSnpVtpm {
     }
 }
 
-pub(crate) fn extend_claim(claim: &mut TeeEvidenceParsedClaim, quote: &Quote) -> Result<()> {
+pub fn extend_claim(claim: &mut TeeEvidenceParsedClaim, quote: &Quote) -> Result<()> {
     let Value::Object(ref mut map) = claim else {
         bail!("failed to extend the claim, not an object");
     };
@@ -286,7 +286,7 @@ pub(crate) fn verify_init_data(expected: &InitDataHash, pcrs: &[&[u8; 32]]) -> R
 
 /// Parses the attestation report and extracts the TEE evidence claims.
 /// Returns a JSON-formatted map of parsed claims.
-pub(crate) fn parse_tee_evidence_az(report: &AttestationReport) -> TeeEvidenceParsedClaim {
+pub fn parse_tee_evidence_az(report: &AttestationReport) -> TeeEvidenceParsedClaim {
     let claims_map = json!({
         // policy fields
         "policy_abi_major": format!("{}",report.policy.abi_major()),
