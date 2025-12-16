@@ -37,7 +37,7 @@ use std::time::Instant;
 
 #[derive(Serialize, Deserialize)]
 pub struct SnpEvidence {
-    attestation_report: AttestationReport,
+    pub attestation_report: AttestationReport,
     cert_chain: Option<Vec<CertTableEntry>>,
 }
 
@@ -511,7 +511,7 @@ pub(crate) fn verify_report_tcb(
 
 /// Parses the attestation report and extracts the TEE evidence claims.
 /// Returns a JSON-formatted map of parsed claims.
-pub(crate) fn parse_tee_evidence(report: &AttestationReport) -> TeeEvidenceParsedClaim {
+pub fn parse_tee_evidence(report: &AttestationReport) -> TeeEvidenceParsedClaim {
     let claims_map = json!({
         // policy fields
         "policy_abi_major": report.policy.abi_major(),
