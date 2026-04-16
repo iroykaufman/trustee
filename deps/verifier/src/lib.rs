@@ -68,6 +68,19 @@ pub struct VerifierConfig {
     dcap_verifier: Option<intel_dcap::QcnlConfig>,
 }
 
+impl VerifierConfig {
+    /// Get the trusted AK keys directory from TPM verifier config, if available.
+    pub fn trusted_ak_keys_dir(&self) -> Option<std::path::PathBuf> {
+        cfg_if::cfg_if! {
+            if #[cfg(feature = "tpm-verifier")] {
+                self.tpm_verifier.as_ref().map(|c| c.trusted_ak_keys_dir.clone())
+            } else {
+                None
+            }
+        }
+    }
+}
+
 pub async fn to_verifier(
     tee: &Tee,
     _config: Option<VerifierConfig>,
