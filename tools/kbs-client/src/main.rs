@@ -150,6 +150,14 @@ enum ConfigCommands {
         resource_file: PathBuf,
     },
 
+    /// Register a trusted TPM Attestation Key (AK) public key
+    SetAttestationKey {
+        /// Path to the AK public key file (PEM format)
+        #[clap(long, value_parser)]
+        key_file: PathBuf,
+    },
+
+
     /// List reference values registered with RVPS
     GetReferenceValues,
 
@@ -331,6 +339,25 @@ async fn main() -> Result<()> {
                         STANDARD.encode(resource_bytes)
                     );
                 }
+                ConfigCommands::SetAttestationKey { key_file } => {
+                    let key_bytes = std::fs::read(&key_file).inspect_err(|_| {
+                        eprintln!("Failed to read: {}", key_file.display())
+                    })?;
+                    kbs_client::set_attestation_key(
+                        &cli.url,
+                        auth_key.clone(),
+                        key_bytes,
+                        kbs_cert.clone(),
+                    )
+                    .await?;
+                    println!("Set attestation key success");
+                }
+                ConfigCommands::GetReferenceValue { id } => {
+                    let value =
+                        kbs_client::get_rv(cli.url, id, auth_key.clone(), kbs_cert.clone())
+                            .await?;
+                    println!("{value}");
+                }
                 ConfigCommands::SetSampleReferenceValue {
                     name,
                     value,
@@ -360,11 +387,6 @@ async fn main() -> Result<()> {
                     )
                     .await?;
                     println!("Reference Values Updated");
-                }
-                ConfigCommands::GetReferenceValues => {
-                    let values =
-                        kbs_client::get_rvs(cli.url, auth_key.clone(), kbs_cert.clone()).await?;
-                    println!("{:?}", values);
                 }
             }
         }

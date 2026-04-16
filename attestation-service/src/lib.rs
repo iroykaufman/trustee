@@ -270,6 +270,43 @@ impl AttestationService {
             .context("query reference values")
     }
 
+    /// Register a trusted TPM Attestation Key (AK) public key.
+    /// The key is stored as a PEM file in the trusted AK keys directory.
+    pub async fn register_attestation_key(&self, key_pem: &str) -> Result<()> {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+        use std::io::Write;
+
+        let trusted_ak_keys_dir = self
+            .config
+            .verifier_config
+            .as_ref()
+            .and_then(|c| c.trusted_ak_keys_dir())
+            .unwrap_or_else(|| std::path::PathBuf::from("/etc/tpm/trusted_ak_keys"));
+
+        std::fs::create_dir_all(&trusted_ak_keys_dir).with_context(|| {
+            format!(
+                "Failed to create trusted AK keys directory: {:?}",
+                trusted_ak_keys_dir
+            )
+        })?;
+
+        // Generate a deterministic filename from the key content for idempotency
+        let mut hasher = DefaultHasher::new();
+        key_pem.hash(&mut hasher);
+        let hash = hasher.finish();
+        let filename = format!("{:016x}.pub", hash);
+        let key_path = trusted_ak_keys_dir.join(&filename);
+
+        let mut file = std::fs::File::create(&key_path)
+            .with_context(|| format!("Failed to create AK key file: {:?}", key_path))?;
+        file.write_all(key_pem.as_bytes())
+            .with_context(|| format!("Failed to write AK key file: {:?}", key_path))?;
+
+        info!("Registered TPM attestation key: {}", filename);
+        Ok(())
+    }
+
     pub async fn generate_supplemental_challenge(
         &self,
         tee: Tee,

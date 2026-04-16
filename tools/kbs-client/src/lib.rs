@@ -321,6 +321,39 @@ pub async fn get_rvs(
     }
 }
 
+/// Register a trusted TPM Attestation Key (AK) public key.
+/// Input parameters:
+/// - url: KBS server root URL.
+/// - auth_key: KBS owner's authenticate private key (PEM string).
+/// - key_pem: AK public key content in PEM format.
+/// - kbs_root_certs_pem: Custom HTTPS root certificate of KBS server. It can be left blank.
+pub async fn set_attestation_key(
+    url: &str,
+    auth_key: String,
+    key_pem: Vec<u8>,
+    kbs_root_certs_pem: Vec<String>,
+) -> Result<()> {
+    let token = sign_admin_token(&auth_key)?;
+
+    let http_client = build_http_client(kbs_root_certs_pem)?;
+
+    let attestation_key_url = format!("{}/{KBS_URL_PREFIX}/attestation-key", url);
+    let res = http_client
+        .post(attestation_key_url)
+        .header("Content-Type", "application/x-pem-file")
+        .bearer_auth(token)
+        .body(key_pem)
+        .send()
+        .await?;
+
+    match res.status() {
+        reqwest::StatusCode::OK => Ok(()),
+        _ => {
+            bail!("Request Failed, Response: {:?}", res.text().await?)
+        }
+    }
+}
+
 fn build_http_client(kbs_root_certs_pem: Vec<String>) -> Result<reqwest::Client> {
     let mut client_builder =
         reqwest::Client::builder().user_agent(format!("kbs-client/{}", env!("CARGO_PKG_VERSION")));
