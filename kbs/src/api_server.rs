@@ -299,6 +299,21 @@ pub(crate) async fn api(
             Ok(HttpResponse::Ok().content_type("application/json").finish())
         }
 
+        #[cfg(feature = "as")]
+        "attestation-key" if request.method() == Method::POST => {
+            core.admin.check_admin_access(&request)?;
+            let key_pem = std::str::from_utf8(&body).map_err(|_| Error::AttestationKeyError {
+                message: "Failed to parse attestation key: invalid UTF-8".to_string(),
+            })?;
+            core.attestation_service
+                .register_attestation_key(key_pem)
+                .await
+                .map_err(|e| Error::AttestationKeyError {
+                    message: format!("Failed to register attestation key: {e}"),
+                })?;
+
+            Ok(HttpResponse::Ok().content_type("application/json").finish())
+        }
         // TODO: consider to rename the api name for it is not only for
         // resource retrievement but for all plugins.
         "resource-policy" if request.method() == Method::POST => {

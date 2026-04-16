@@ -122,6 +122,14 @@ pub trait Attest: Send + Sync {
             "Attestation Service does not support reference value configuration."
         ))
     }
+
+    /// Register a trusted TPM Attestation Key (AK) public key
+    async fn register_attestation_key(&self, _key_pem: &str) -> anyhow::Result<()> {
+        Err(anyhow!(
+            "Attestation Service does not support attestation key management."
+        ))
+    }
+
 }
 
 /// Attestation Service
@@ -480,6 +488,12 @@ impl AttestationService {
             None => bail!("No reference value found for the given id: {reference_value_id}"),
         }
     }
+
+    pub async fn register_attestation_key(&self, key_pem: &str) -> anyhow::Result<()> {
+        self.inner.register_attestation_key(key_pem).await?;
+        Ok(())
+    }
+
 }
 
 #[cfg(test)]
