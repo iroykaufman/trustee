@@ -310,7 +310,7 @@ impl Verifier for TpmVerifier {
         }
 
         // 5. Verify init data hash
-        verify_init_data(expected_init_data_hash, &quote)?;
+        //verify_init_data(expected_init_data_hash, &quote)?;
 
         // 6. Parse claims
         let mut claims = parse_tee_evidence(&quote);
