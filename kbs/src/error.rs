@@ -76,6 +76,9 @@ pub enum Error {
     #[error("RVPS configuration failed: {message}")]
     RvpsError { message: String },
 
+    #[error("Attestation key management failed: {message}")]
+    AttestationKeyError { message: String },
+
     #[error("Serialize/Deserialize failed")]
     SerdeError(#[from] serde_json::Error),
 

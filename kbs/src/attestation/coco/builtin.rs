@@ -131,6 +131,14 @@ impl Attest for BuiltInCoCoAs {
             .await?;
         Ok(rvs)
     }
+
+    async fn register_attestation_key(&self, key_pem: &str) -> anyhow::Result<()> {
+        self.inner
+            .read()
+            .await
+            .register_attestation_key(key_pem)
+            .await
+    }
 }
 
 impl BuiltInCoCoAs {

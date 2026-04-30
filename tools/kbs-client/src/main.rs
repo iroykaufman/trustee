@@ -159,6 +159,13 @@ enum ConfigCommands {
         path: String,
     },
 
+    /// Register a trusted TPM Attestation Key (AK) public key
+    SetAttestationKey {
+        /// Path to the AK public key file (PEM format)
+        #[clap(long, value_parser)]
+        key_file: PathBuf,
+    },
+
     /// Get reference value from RVPS given reference value ID
     GetReferenceValue {
         /// The ID of the reference value.
@@ -359,6 +366,18 @@ async fn main() -> Result<()> {
                     )
                     .await?;
                     println!("Delete resource success");
+                }
+                ConfigCommands::SetAttestationKey { key_file } => {
+                    let key_bytes = std::fs::read(&key_file)
+                        .inspect_err(|_| eprintln!("Failed to read: {}", key_file.display()))?;
+                    kbs_client::set_attestation_key(
+                        &cli.url,
+                        auth_key.clone(),
+                        key_bytes,
+                        kbs_cert.clone(),
+                    )
+                    .await?;
+                    println!("Set attestation key success");
                 }
                 ConfigCommands::SetSampleReferenceValue {
                     name,
